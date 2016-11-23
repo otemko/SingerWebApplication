@@ -11,9 +11,7 @@ namespace ORMSinger
     public class SingerDbContext: DbContext
     {
         public SingerDbContext(): base("SingerDB")
-        {
-            
-        }
+        { }
 
         public DbSet<Singer> Singers { get; set; }
         public DbSet<Song> Songs { get; set; }

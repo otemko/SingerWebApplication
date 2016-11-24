@@ -1,10 +1,5 @@
-﻿using ORMSinger.Entities;
-using System;
-using System.Collections.Generic;
+﻿using ModelSinger;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ORMSinger
 {

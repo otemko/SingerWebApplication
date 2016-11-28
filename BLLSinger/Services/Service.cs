@@ -14,21 +14,36 @@ namespace BLLSinger.Services
             this.repository = repository;
         }
 
-        public virtual async Task CreateAsync(T entity)
+        public virtual void Create(T entity)
         {
-            await repository.CreateAsync(entity);
+            repository.Create(entity);
         }
-        
-        public virtual async Task UpdateAsync(T entity)
+
+        public virtual void CreateRange(T[] entities)
         {
-            await repository.UpdateAsync<T>(entity);
+            repository.CreateRange(entities);
         }
-        
-        public virtual async Task DeleteAsync(T entity)
+
+        public virtual void Update(T entity)
         {
-            await repository.DeleteAsync<T>(entity);
+            repository.Update<T>(entity);
         }
-        
+
+        public virtual void UpdateRange(T[] entities)
+        {
+            repository.UpdateRange<T>(entities);
+        }
+
+        public virtual void Delete(T entity)
+        {
+            repository.Delete<T>(entity);
+        }
+
+        public virtual void DeleteRange(T[] entities)
+        {
+            repository.DeleteRange<T>(entities);
+        }
+
         public virtual Task<IEnumerable<T>> GetAllAsync()
         {
             var kk = repository.GetAllAsync<T>();

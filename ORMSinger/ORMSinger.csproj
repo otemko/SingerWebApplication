@@ -49,9 +49,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201611231526004_1.cs" />
-    <Compile Include="Migrations\201611231526004_1.Designer.cs">
-      <DependentUpon>201611231526004_1.cs</DependentUpon>
+    <Compile Include="Migrations\201611282248595_2.cs" />
+    <Compile Include="Migrations\201611282248595_2.Designer.cs">
+      <DependentUpon>201611282248595_2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,15 +62,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201611231526004_1.resx">
-      <DependentUpon>201611231526004_1.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ModelSinger\ModelSinger.csproj">
       <Project>{b03e1e32-5b35-43df-8505-7a4c06edf5cf}</Project>
       <Name>ModelSinger</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201611282248595_2.resx">
+      <DependentUpon>201611282248595_2.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

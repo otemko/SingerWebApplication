@@ -7,9 +7,12 @@ namespace DALSinger
 {
     public interface IRepository
     {
-        Task CreateAsync<T>(T entity) where T : class;
-        Task DeleteAsync<T>(T entity) where T : class;
-        Task UpdateAsync<T>(T entity) where T : class;
+        void Create<T>(T entity) where T : class;
+        void CreateRange<T>(T[] entities) where T : class;
+        void Delete<T>(T entity) where T : class;
+        void DeleteRange<T>(T[] entities) where T : class;
+        void Update<T>(T entity) where T : class;
+        void UpdateRange<T>(T[] entities) where T : class;
 
         Task<IEnumerable<T>> GetAllAsync<T>() where T : class;
         Task<T> Get<T>(int id) where T : class;

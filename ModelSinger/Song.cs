@@ -8,6 +8,7 @@ namespace ModelSinger
         public string Name { get; set; }
         public string Text { get; set; }
         public int Views { get; set; }
+        public string Url { get; set; }
 
         public int? SingerId { get; set; }
         public virtual Singer Singer { get; set; }

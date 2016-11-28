@@ -19,28 +19,52 @@ namespace DALSinger
             this.dbcontext = dbcontext;
         }
 
-        public async Task CreateAsync<T>(T entity) where T : class
+        public void Create<T>(T entity) where T : class
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
 
             dbcontext.Set<T>().Add(entity);
-            await dbcontext.SaveChangesAsync();
+            dbcontext.SaveChanges();
         }
 
-        public async Task DeleteAsync<T>(T entity) where T : class
+        public void CreateRange<T>(T[] entities) where T : class
+        {
+            if (entities == null) throw new ArgumentNullException(nameof(entities));
+
+            dbcontext.Set<T>().AddRange(entities);
+            dbcontext.SaveChanges();
+        }
+
+        public void Delete<T>(T entity) where T : class
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
 
             dbcontext.Set<T>().Remove(entity);
-            await dbcontext.SaveChangesAsync();
+            dbcontext.SaveChanges();
         }
 
-        public async Task UpdateAsync<T>(T entity) where T : class
+        public void DeleteRange<T>(T[] entities) where T : class
+        {
+            if (entities == null) throw new ArgumentNullException(nameof(entities));
+
+            dbcontext.Set<T>().RemoveRange(entities);
+            dbcontext.SaveChanges();
+        }
+
+        public void Update<T>(T entity) where T : class
         {
             if (entity == null) throw new ArgumentNullException(nameof(entity));
 
             dbcontext.Set<T>().AddOrUpdate(entity);
-            await dbcontext.SaveChangesAsync();
+            dbcontext.SaveChanges();
+        }
+
+        public void UpdateRange<T>(T[] entities) where T : class
+        {
+            if (entities == null) throw new ArgumentNullException(nameof(entities));
+
+            dbcontext.Set<T>().AddOrUpdate(entities);
+            dbcontext.SaveChanges();
         }
 
         public async Task<IEnumerable<T>> Get<T>(Expression<Func<T, bool>> predicate) where T : class

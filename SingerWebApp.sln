@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORMSinger", "ORMSinger\ORMSinger.csproj", "{739385F4-51C0-48C7-8DE1-6D55AA55C187}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DALSinger", "DALSinger\DALSinger.csproj", "{0ECAD3F5-EEA1-45FB-99CF-B751AFFA3737}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelSinger", "ModelSinger\ModelSinger.csproj", "{B03E1E32-5B35-43DF-8505-7A4C06EDF5CF}"
@@ -17,16 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "Cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseSinger", "ParseSinger\ParseSinger.csproj", "{F70C4168-DB00-42B3-B385-377804217B3D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ORMSinger", "ORMSinger\ORMSinger.csproj", "{B69913AE-F22B-4796-BD84-847FEB83FAD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{739385F4-51C0-48C7-8DE1-6D55AA55C187}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{739385F4-51C0-48C7-8DE1-6D55AA55C187}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{739385F4-51C0-48C7-8DE1-6D55AA55C187}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{739385F4-51C0-48C7-8DE1-6D55AA55C187}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0ECAD3F5-EEA1-45FB-99CF-B751AFFA3737}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0ECAD3F5-EEA1-45FB-99CF-B751AFFA3737}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ECAD3F5-EEA1-45FB-99CF-B751AFFA3737}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +47,10 @@ Global
 		{F70C4168-DB00-42B3-B385-377804217B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F70C4168-DB00-42B3-B385-377804217B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F70C4168-DB00-42B3-B385-377804217B3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B69913AE-F22B-4796-BD84-847FEB83FAD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B69913AE-F22B-4796-BD84-847FEB83FAD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B69913AE-F22B-4796-BD84-847FEB83FAD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B69913AE-F22B-4796-BD84-847FEB83FAD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

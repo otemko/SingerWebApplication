@@ -23,7 +23,7 @@ namespace ParseSinger
 
             var singers = new List<Singer>();
 
-            for (int i = 2; i < 3/*tableNodes.Length*/; i++)
+            for (int i = 1; i < 3; i++)
             {
                 var aNode = tableNodes[i].SelectSingleNode(".//td[@class='artist_name']//a");
 
@@ -33,7 +33,7 @@ namespace ParseSinger
                 var urlSinger = "http:" + aNode.Attributes["href"].Value;
 
                 //var biography = GetBiography(urlSinger);
-                var songs = GetSongsFromPage(urlSinger);
+                //var songs = GetSongsFromPage(urlSinger);
 
                 singers.Add(new Singer
                 {
@@ -41,7 +41,7 @@ namespace ParseSinger
                     Url = urlSinger,
                     Views = views,
                     //Biography = biography,
-                    Songs = songs.ToList()
+                    //Songs = songs.ToList()
                 });
             }
 
@@ -65,16 +65,16 @@ namespace ParseSinger
                 var urlSong = "http:" + aNode.Attributes["href"].Value;
 
                 var htmlSong = GetHtml(urlSong);
-                var text = GetSongText(htmlSong);
-                var accords = GetSongAccords(htmlSong);
+                //var text = GetSongText(htmlSong);
+                //var accords = GetSongAccords(htmlSong);
 
                 songs.Add(new Song
                 {
                     Name = aNode.InnerText,
                     Views = views,
                     Url = urlSong,
-                    Text = text,
-                    Accords = accords == null ? null : accords.ToList()
+                    //Text = text,
+                    //Accords = accords == null ? null : accords.ToList()
                 });
             }
 

@@ -58,10 +58,6 @@
       <Project>{b03e1e32-5b35-43df-8505-7a4c06edf5cf}</Project>
       <Name>ModelSinger</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ORMSinger\ORMSinger.csproj">
-      <Project>{739385f4-51c0-48c7-8de1-6d55aa55c187}</Project>
-      <Name>ORMSinger</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

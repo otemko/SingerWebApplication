@@ -85,7 +85,8 @@ namespace DALSinger
 
         public async Task<IEnumerable<T>> GetAllAsync<T>() where T : class
         {
-            return await dbcontext.Set<T>().ToListAsync();
+            var kk = await dbcontext.Set<T>().ToListAsync();
+            return kk;
         }        
     }
 }

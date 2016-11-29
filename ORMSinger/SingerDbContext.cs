@@ -1,11 +1,16 @@
 ﻿using ModelSinger;
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ORMSinger
 {
-    public class SingerDbContext: DbContext
+    public class SingerDbContext : DbContext
     {
-        public SingerDbContext(): base("SingerDB")
+        public SingerDbContext() : base("SingerDB")
         { }
 
         public DbSet<Singer> Singers { get; set; }

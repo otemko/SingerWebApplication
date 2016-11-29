@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{739385F4-51C0-48C7-8DE1-6D55AA55C187}</ProjectGuid>
+    <ProjectGuid>{B69913AE-F22B-4796-BD84-847FEB83FAD7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ORMSinger</RootNamespace>
@@ -49,16 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201611291015055_3.cs" />
-    <Compile Include="Migrations\201611291015055_3.Designer.cs">
-      <DependentUpon>201611291015055_3.cs</DependentUpon>
+    <Compile Include="Migrations\201611291513225_1.cs" />
+    <Compile Include="Migrations\201611291513225_1.Designer.cs">
+      <DependentUpon>201611291513225_1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingerDbContext.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -68,8 +70,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201611291015055_3.resx">
-      <DependentUpon>201611291015055_3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201611291513225_1.resx">
+      <DependentUpon>201611291513225_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

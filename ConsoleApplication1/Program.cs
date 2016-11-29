@@ -21,10 +21,6 @@ namespace ConsoleApplication1
             var singers = Parse.GetSingersFromPage("http://amdm.ru/chords/");            
             var service = new SingerService(new Repository(new SingerDbContext()));
             service.CreateRange(singers.ToArray());
-            //foreach (var singer in singers)
-            //{
-            //    Console.WriteLine(singer.Name + " " + singer.Url + " " + singer.Views);
-            //}
         }
     }
 }

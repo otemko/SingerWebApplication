@@ -56,7 +56,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -73,7 +75,7 @@
       <Name>ModelSinger</Name>
     </ProjectReference>
     <ProjectReference Include="..\ORMSinger\ORMSinger.csproj">
-      <Project>{739385f4-51c0-48c7-8de1-6d55aa55c187}</Project>
+      <Project>{b69913ae-f22b-4796-bd84-847feb83fad7}</Project>
       <Name>ORMSinger</Name>
     </ProjectReference>
     <ProjectReference Include="..\ParseSinger\ParseSinger.csproj">

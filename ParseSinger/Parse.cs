@@ -14,6 +14,8 @@ namespace ParseSinger
     {
         public static Encoding encode = Encoding.GetEncoding("utf-8");
 
+        public static List<Accord> unicAccords = new List<Accord>();
+
         public static IEnumerable<Singer> GetSingersFromPage(string url)
         {
             var html = GetHtml(url);
@@ -21,7 +23,7 @@ namespace ParseSinger
 
             var singers = new List<Singer>();
 
-            for (int i = 1; i < 3/*tableNodes.Length*/; i++)
+            for (int i = 2; i < 3/*tableNodes.Length*/; i++)
             {
                 var aNode = tableNodes[i].SelectSingleNode(".//td[@class='artist_name']//a");
 
@@ -55,16 +57,16 @@ namespace ParseSinger
 
             for (var i = 1; i < tableNodes.Length; i++)
             {
-                
+
                 var viewsString = tableNodes[i].SelectSingleNode(".//td[@class='number hidden-phone']").InnerText;
                 var views = Convert.ToInt32(SelectNumerics(viewsString));
 
                 var aNode = tableNodes[i].SelectSingleNode(".//td//a");
                 var urlSong = "http:" + aNode.Attributes["href"].Value;
 
-                var text = GetSongText(urlSong);
-
-                var accords = GetSongAccords(urlSong);
+                var htmlSong = GetHtml(urlSong);
+                var text = GetSongText(htmlSong);
+                var accords = GetSongAccords(htmlSong);
 
                 songs.Add(new Song
                 {
@@ -72,43 +74,56 @@ namespace ParseSinger
                     Views = views,
                     Url = urlSong,
                     Text = text,
-                    Accords = accords.ToList()
+                    Accords = accords == null ? null : accords.ToList()
                 });
             }
 
             return songs;
         }
 
-        public static string GetSongText(string url)
+        public static string GetSongText(HtmlDocument html)
         {
-            var html = GetHtml(url);
             var text = html.DocumentNode.SelectSingleNode("//div[@class='b-podbor__text']//pre").InnerText;
             return text;
         }
 
-        public static IEnumerable<Accord> GetSongAccords(string url)
+        public static IEnumerable<Accord> GetSongAccords(HtmlDocument html)
         {
-            var html = GetHtml(url);
             var accords = new List<Accord>();
 
-            var imgNodes = html.DocumentNode.SelectNodes("//div[@id='song_chords']//img").ToList();
+            var imgNodes = html.DocumentNode.SelectNodes("//div[@id='song_chords']//img");
+
+            if (imgNodes == null)
+                return null;
 
             foreach (var imgNode in imgNodes)
             {
                 var name = imgNode.Attributes["alt"].Value;
                 var imageSrc = "http:" + imgNode.Attributes["src"].Value;
 
-                var image = GetImageFromUrl(imageSrc);
-
-                accords.Add(new Accord
+                var accord = CheckAccord(imageSrc);
+                
+                if (accord == null)
                 {
-                    Image = image,
-                    Name = name
-                });
-            }
+                    var image = DownloadRemoteImageFile(imageSrc);
 
+                    var newAccord = new Accord
+                    {
+                        Image = image,
+                        Name = name,
+                        Url = imageSrc
+                    };
+
+                    accords.Add(newAccord);
+                    unicAccords.Add(newAccord);
+                }
+                else
+                {
+                    accords.Add(accord);
+                }                
+            }
             return accords;
-        }
+        }       
 
         public static IEnumerable<Singer> GetSingers(string startUrl)
         {
@@ -127,6 +142,16 @@ namespace ParseSinger
             }
 
             return singers;
+        }
+
+        private static Accord CheckAccord(string url)
+        {
+            foreach (var unicAccord in unicAccords)
+            {
+                if (unicAccord.Url == url)
+                    return unicAccord;
+            }
+            return null;
         }
 
         private static string GetBiography(string url)
@@ -177,36 +202,50 @@ namespace ParseSinger
 
         private static byte[] GetImageFromUrl(string url)
         {
-            using (var webClient = new WebClient())
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            var response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode != HttpStatusCode.NotFound)
             {
-                return webClient.DownloadData(url);
+                using (var webClient = new WebClient())
+                {
+                    return webClient.DownloadData(url);
+                }
             }
+            return null;
         }
 
-        private static void DownloadRemoteImageFile(string uri, string fileName)
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 
-            if ((response.StatusCode == HttpStatusCode.OK ||
+        private static byte[] DownloadRemoteImageFile(string uri)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(uri);
+            try
+            {
+                var response = (HttpWebResponse)request.GetResponse();
+                if ((response.StatusCode == HttpStatusCode.OK ||
                 response.StatusCode == HttpStatusCode.Moved ||
                 response.StatusCode == HttpStatusCode.Redirect) &&
                 response.ContentType.StartsWith("image", StringComparison.OrdinalIgnoreCase))
-            {
-
-                // if the remote file was found, download oit
-                using (Stream inputStream = response.GetResponseStream())
-                using (Stream outputStream = File.OpenWrite(fileName))
                 {
-                    byte[] buffer = new byte[4096];
-                    int bytesRead;
-                    do
+                    using (Stream inputStream = response.GetResponseStream())
                     {
-                        bytesRead = inputStream.Read(buffer, 0, buffer.Length);
-                        outputStream.Write(buffer, 0, bytesRead);
-                    } while (bytesRead != 0);
+                        var buffer = new byte[byte.MaxValue];
+                        int bytesRead;
+                        do
+                        {
+                            bytesRead = inputStream.Read(buffer, 0, buffer.Length);
+
+                        } while (bytesRead != 0);
+                        return buffer;
+                    }
                 }
+                return null;
             }
+            catch(WebException ex)
+            {
+                return null;
+            }            
+
+            
         }
 
 

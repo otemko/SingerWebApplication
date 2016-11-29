@@ -8,6 +8,7 @@ namespace ModelSinger
 
         public string Name { get; set; }
         public byte[] Image { get; set; }
+        public string Url { get; set; }
 
         public virtual ICollection<Song> Songs { get; set; }
     }

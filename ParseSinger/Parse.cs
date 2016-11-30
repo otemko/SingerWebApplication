@@ -83,7 +83,7 @@ namespace ParseSinger
 
         public static string GetSongText(HtmlDocument html)
         {
-            var text = html.DocumentNode.SelectSingleNode("//div[@class='b-podbor__text']//pre").InnerHtml;
+            var text = html.DocumentNode.SelectSingleNode("//div[@class='b-podbor__text']//pre").InnerText;
             return text;
         }
 
@@ -102,7 +102,7 @@ namespace ParseSinger
                 var imageSrc = "http:" + imgNode.Attributes["src"].Value;
 
                 var accord = CheckAccord(imageSrc);
-                
+
                 if (accord == null)
                 {
                     var image = DownloadRemoteImageFile(imageSrc);
@@ -110,7 +110,7 @@ namespace ParseSinger
                     var newAccord = new Accord
                     {
                         Image = image,
-                        Name = name,
+                        Name = SelectEnglishLetters(name),
                         Url = imageSrc
                     };
 
@@ -120,10 +120,10 @@ namespace ParseSinger
                 else
                 {
                     accords.Add(accord);
-                }                
+                }
             }
             return accords;
-        }       
+        }
 
         public static IEnumerable<Singer> GetSingers(string startUrl)
         {
@@ -189,6 +189,20 @@ namespace ParseSinger
             return str;
         }
 
+        private static string SelectEnglishLetters(string s)
+        {
+            var pattern = @"[^\u0400-\u04FF]";
+            var regex = new Regex(pattern);
+
+            var str = "";
+            var match = regex.Matches(s);
+            foreach (var item in match)
+            {
+                str += item.ToString();
+            }
+            return str;
+        }
+
         private static HtmlDocument GetHtml(string url)
         {
             System.Threading.Thread.Sleep(1000);
@@ -203,15 +217,20 @@ namespace ParseSinger
         private static byte[] GetImageFromUrl(string url)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
-            var response = (HttpWebResponse)request.GetResponse();
-            if (response.StatusCode != HttpStatusCode.NotFound)
+            try
             {
-                using (var webClient = new WebClient())
-                {
-                    return webClient.DownloadData(url);
-                }
+                var response = (HttpWebResponse)request.GetResponse();
             }
-            return null;
+            catch (WebException ex)
+            {
+                return null;
+            }
+
+            using (var webClient = new WebClient())
+            {
+                return webClient.DownloadData(url);
+            }
+
         }
 
 
@@ -228,7 +247,7 @@ namespace ParseSinger
                 {
                     using (Stream inputStream = response.GetResponseStream())
                     {
-                        var buffer = new byte[byte.MaxValue];
+                        var buffer = new byte[4096];
                         int bytesRead;
                         do
                         {
@@ -240,12 +259,10 @@ namespace ParseSinger
                 }
                 return null;
             }
-            catch(WebException ex)
+            catch (WebException ex)
             {
                 return null;
-            }            
-
-            
+            }
         }
 
 

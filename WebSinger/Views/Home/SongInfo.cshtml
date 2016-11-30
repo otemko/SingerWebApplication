@@ -1,22 +1,32 @@
-﻿@using WebSinger.Helpers
-@model ModelSinger.Song
+﻿@model ModelSinger.Song
 
 @{
     ViewBag.Title = Model.Name;
 }
-
-<div>
+<h3>
     @Model.Name
+    <i class="fa fa-pencil fa-fw" aria-hidden="true" onclick="location.href='@Url.Action("EditSong", new { id = Model.Id })'" style="cursor: pointer"></i>
+</h3>
+
+
+<hr>
+<div class="col-lg-8">
+<pre>
+    @Model.Text
+</pre>
 </div>
-<div>
-    @Html.AddText(Model.Text)
+
+<div class="col-lg-4">
+    @foreach (ModelSinger.Accord accord in Model.Accords)
+    {
+        if (accord.Image != null)
+        {
+            <img src="data:image;base64,@System.Convert.ToBase64String(accord.Image)" alt="@accord.Name" />
+        }
+        else
+        {
+            <img alt="@accord.Name" />
+        }
+    }
 </div>
 
-@foreach (ModelSinger.Accord accord in Model.Accords)
-{
-    var base64 = Convert.ToBase64String(accord.Image);
-    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-
-
-    <img src="@imgSrc" alt="@accord.Name"/>
-}

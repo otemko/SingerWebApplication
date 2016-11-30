@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using BLLSinger.Interfaces;
+using ModelSinger;
 
 namespace WebSinger.Controllers
 {
@@ -35,6 +36,20 @@ namespace WebSinger.Controllers
         {
             var song = await songService.Get(id);
             return View(song);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> EditSong(int id)
+        {
+            var song = await songService.Get(id);
+            return View(song);
+        }
+
+        [HttpPost]
+        public ActionResult EditSong(Song song)
+        {
+            songService.Update(song);
+            return RedirectToAction("EditSong", new {id = song.Id});
         }
     }
 }

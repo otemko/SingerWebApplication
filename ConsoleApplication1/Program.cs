@@ -18,7 +18,7 @@ namespace ConsoleApplication1
         private static void NewMethod()
         {
             //var singers = Parse.GetSingers("http://amdm.ru/chords/");
-            var singers = Parse.GetSingersFromPage("http://amdm.ru/chords/");            
+            var singers = Parse.GetSingersFromPage("http://amdm.ru/chords/page7");            
             var service = new SingerService(new Repository(new SingerDbContext()));
             service.CreateRange(singers.ToArray());
         }

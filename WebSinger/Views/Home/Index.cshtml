@@ -1,0 +1,28 @@
+﻿@model IEnumerable<ModelSinger.Singer>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Count songs</th>
+            <th>Views</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ModelSinger.Singer singer in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(singer.Name, "SingerInfo", new { id = singer.Id })</td>
+                <td>@singer.Songs.Count</td>
+                <td>@singer.Views</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+
+</div>

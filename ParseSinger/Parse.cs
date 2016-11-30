@@ -23,7 +23,7 @@ namespace ParseSinger
 
             var singers = new List<Singer>();
 
-            for (int i = 1; i < 3; i++)
+            for (int i = 1; i < 2/*tableNodes.Length*/; i++)
             {
                 var aNode = tableNodes[i].SelectSingleNode(".//td[@class='artist_name']//a");
 
@@ -32,16 +32,16 @@ namespace ParseSinger
 
                 var urlSinger = "http:" + aNode.Attributes["href"].Value;
 
-                //var biography = GetBiography(urlSinger);
-                //var songs = GetSongsFromPage(urlSinger);
+                var biography = GetBiography(urlSinger);
+                var songs = GetSongsFromPage(urlSinger);
 
                 singers.Add(new Singer
                 {
                     Name = aNode.InnerText,
                     Url = urlSinger,
                     Views = views,
-                    //Biography = biography,
-                    //Songs = songs.ToList()
+                    Biography = biography,
+                    Songs = songs.ToList()
                 });
             }
 
@@ -65,16 +65,16 @@ namespace ParseSinger
                 var urlSong = "http:" + aNode.Attributes["href"].Value;
 
                 var htmlSong = GetHtml(urlSong);
-                //var text = GetSongText(htmlSong);
-                //var accords = GetSongAccords(htmlSong);
+                var text = GetSongText(htmlSong);
+                var accords = GetSongAccords(htmlSong);
 
                 songs.Add(new Song
                 {
                     Name = aNode.InnerText,
                     Views = views,
                     Url = urlSong,
-                    //Text = text,
-                    //Accords = accords == null ? null : accords.ToList()
+                    Text = text,
+                    Accords = accords == null ? null : accords.ToList()
                 });
             }
 
@@ -83,7 +83,7 @@ namespace ParseSinger
 
         public static string GetSongText(HtmlDocument html)
         {
-            var text = html.DocumentNode.SelectSingleNode("//div[@class='b-podbor__text']//pre").InnerText;
+            var text = html.DocumentNode.SelectSingleNode("//div[@class='b-podbor__text']//pre").InnerHtml;
             return text;
         }
 
@@ -164,7 +164,7 @@ namespace ParseSinger
             var href = aNode.Attributes["href"].Value;
             var htmlWiki = GetHtml("http://amdm.ru" + href);
 
-            return htmlWiki.DocumentNode.SelectSingleNode("//div[@class='artist-profile__bio']").InnerText;
+            return htmlWiki.DocumentNode.SelectSingleNode("//div[@class='artist-profile__bio']").InnerHtml;
         }
 
         private static string GetCountPages(HtmlDocument html)

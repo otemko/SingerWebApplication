@@ -1,0 +1,31 @@
+﻿@using WebSinger.Helpers
+@model ModelSinger.Singer
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<div>
+    @Model.Name
+</div>
+<div>
+    @Html.AddText(Model.Biography)
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Views</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ModelSinger.Song song in Model.Songs)
+        {
+            <tr>
+                <td>@Html.ActionLink(song.Name, "SongInfo", new { id = song.Id })</td>
+                <td>@song.Views</td>
+            </tr>
+        }
+    </tbody>
+</table>

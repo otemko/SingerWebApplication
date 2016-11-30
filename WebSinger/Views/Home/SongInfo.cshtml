@@ -1,0 +1,22 @@
+﻿@using WebSinger.Helpers
+@model ModelSinger.Song
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<div>
+    @Model.Name
+</div>
+<div>
+    @Html.AddText(Model.Text)
+</div>
+
+@foreach (ModelSinger.Accord accord in Model.Accords)
+{
+    var base64 = Convert.ToBase64String(accord.Image);
+    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+
+    <img src="@imgSrc" alt="@accord.Name"/>
+}

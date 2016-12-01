@@ -21,12 +21,18 @@ namespace WebSinger
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
+                      "~/Scripts/respond.js",
+                      "~/Scripts/jquery-ui-1.12.1.min.js",
+                      "~/Scripts/typeahead.bundle.min.js",
+                      "~/Scripts/bootstrap-tokenfield.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/fontawesome/font-awesome.css"));
+                      "~/Content/fontawesome/font-awesome.css",
+                      "~/Content/bootstrap-tokenfield/bootstrap-tokenfield.css",
+                      "~/Content/bootstrap-tokenfield/tokenfield-typeahead.css",
+                      "~/Content/themes/base/all.css"));
         }
     }
 }

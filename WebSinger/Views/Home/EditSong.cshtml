@@ -1,4 +1,4 @@
-﻿@model ModelSinger.Song
+﻿@model WebSinger.Models.SongViewModel
 
 @{
     ViewBag.Title = Model.Name;
@@ -8,30 +8,71 @@
     @Model.Name
 </h3>
 <hr>
+
+<script>
+    $(document)
+        .ready(function () {
+            $.get('@Url.Action("AutocompleteSearch", "Home")',
+                function (data) {
+
+                    function trimSpaceInArray(array) {
+                        for (var i = 0; i < array.length; i++) {
+                            array[i] = array[i].trim();
+                        }
+                        return array;
+                    }
+
+                    var tokens = trimSpaceInArray(data);
+
+                    var songAccords = trimSpaceInArray(@Html.Raw(Json.Encode(Model.AccordStrings)));
+
+                    $('#tokenfield')
+                        .val(songAccords)
+                        .tokenfield({
+                            autocomplete: {
+                                source: tokens,
+                                delay: 100
+                            },
+                            showAutocompleteOnFocus: false
+                        }).on('tokenfield:createtoken', function (e) {
+
+                            var existingTokens = $(this).tokenfield('getTokens');
+
+                            var isContain = false;
+                            $.each(existingTokens, function(index, token) {
+                                if (token.value === e.attrs.value) {
+                                    isContain = true;
+                                }
+                            });
+
+                            var isExist = false;
+
+                            $.each(tokens, function (index, token) {
+                                if (token === e.attrs.value) {
+                                    isExist = true;
+                                }
+                            });
+
+                            if (isExist !== true || isContain === true)
+                                e.preventDefault();
+                            else {
+                                songAccords.push(e.attrs.value);
+                            }
+                        });
+                    
+                });
+        });
+</script>
+
 @using (Html.BeginForm("EditSong", "Home", FormMethod.Post))
 {
     <div class="form-group">
-        @Html.HiddenFor(m => m.Name)
         @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.Name)
 
-        <div class="col-lg-8">
-            @Html.TextAreaFor(m => m.Text, new {@class = "form-control", rows = 20, style = "width: 100%; resize: none;"})
-        </div>
+        @Html.TextAreaFor(m => m.Text, new {@class = "form-control", rows = 20, style = "width: 100%; resize: none;"})
 
-        <div class="col-lg-4">
-            @foreach (ModelSinger.Accord accord in Model.Accords)
-            {
-                if (accord.Image != null)
-                {
-                    <img src="data:image;base64,@System.Convert.ToBase64String(accord.Image)" alt="@accord.Name"/>
-                }
-                else
-                {
-                    <img alt="@accord.Name"/>
-                }
-            }
-
-        </div>
+        <input type="text" name="AccordStrings" class="form-control" id="tokenfield"/>
     </div>
     <input type="submit" class="btn btn-default" value="Submit Button">
 }

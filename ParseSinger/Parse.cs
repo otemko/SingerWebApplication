@@ -265,7 +265,6 @@ namespace ParseSinger
             }
         }
 
-
         //private static string GetHtmlString(string url)
         //{
         //    System.Threading.Thread.Sleep(500);

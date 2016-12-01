@@ -13,18 +13,8 @@
     $(document)
         .ready(function () {
             $.get('@Url.Action("AutocompleteSearch", "Home")',
-                function (data) {
-
-                    function trimSpaceInArray(array) {
-                        for (var i = 0; i < array.length; i++) {
-                            array[i] = array[i].trim();
-                        }
-                        return array;
-                    }
-
-                    var tokens = trimSpaceInArray(data);
-
-                    var songAccords = trimSpaceInArray(@Html.Raw(Json.Encode(Model.AccordStrings)));
+                function (tokens) {
+                    var songAccords = @Html.Raw(Json.Encode(Model.AccordStrings));
 
                     $('#tokenfield')
                         .val(songAccords)

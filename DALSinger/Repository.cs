@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 
 using System.Data.Entity.Migrations;
+using ORMSinger;
 
 
 namespace DALSinger
 {
     public class Repository : IRepository
     {
-        private DbContext dbcontext;
+        private SingerDbContext dbcontext;
 
-        public Repository(DbContext dbcontext)
+        public Repository(SingerDbContext dbcontext)
         {
             this.dbcontext = dbcontext;
         }

@@ -19,8 +19,8 @@ namespace DependencyResolver
         private static IUnityContainer BuildUnityContainer()
         {
             var container = new UnityContainer();
-            
-            container.RegisterType<DbContext, SingerDbContext>();
+
+            container.RegisterType<DbContext,SingerDbContext>(new ContainerControlledLifetimeManager());
             container.RegisterType<IRepository, Repository>();
             container.RegisterType<ISingerService, SingerService>();
             container.RegisterType<ISongService, SongService>();

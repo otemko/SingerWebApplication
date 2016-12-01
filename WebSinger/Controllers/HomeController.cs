@@ -58,28 +58,20 @@ namespace WebSinger.Controllers
         [HttpPost]
         public async Task<ActionResult> EditSong(SongViewModel songView)
         {
-            var accordsName = songView.AccordStrings[0] == "" ? null : songView.AccordStrings[0].Split(',');
+            var accordsName = songView.AccordStrings[0] == "" ? null : 
+                songView.AccordStrings[0].Split(',').Select(a => a.Trim()).ToArray();
+            
+            List<Accord> accords;
 
-            var accords = new List<Accord>();
+            accords = accordsName != null ? (await accordService.GetAccordsByAccordNames(accordsName)).ToList() : null;
 
-            if (accordsName != null)
-            {
-                accords = (await accordService.GetAccordsByAccordNames(accordsName)).ToList();
-            }
-            else
-            {
-                accords = null;
-            }
+            var song = await songService.Get(songView.Id);
+            song.Accords = accords;
+            song.Text = songView.Text;
 
-            songService.Update(new Song
-            {
-                Id = songView.Id,
-                Accords = accords,
-                Name =  songView.Name,
-                Text = songView.Text
-            });
+            songService.Update(song);
 
-            return RedirectToAction("EditSong", new {id = songView.Id});
+            return RedirectToAction("SingerInfo", new {id = song.SingerId});
         }
 
         public async Task<ActionResult> AutocompleteSearch(string term)

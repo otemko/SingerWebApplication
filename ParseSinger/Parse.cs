@@ -191,7 +191,7 @@ namespace ParseSinger
 
         private static string SelectEnglishLetters(string s)
         {
-            var pattern = @"[^\u0400-\u04FF]";
+            var pattern = @"[^\u0400-\u04FF\s]";
             var regex = new Regex(pattern);
 
             var str = "";

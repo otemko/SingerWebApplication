@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Data.Entity;
-
 using System.Data.Entity.Migrations;
 using ORMSinger;
 
@@ -86,8 +85,23 @@ namespace DALSinger
 
         public async Task<IEnumerable<T>> GetAllAsync<T>() where T : class
         {
-            var kk = await dbcontext.Set<T>().ToListAsync();
-            return kk;
-        }        
+            return await dbcontext.Set<T>().ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetPartOrderBy<T>(int take, int skip, bool isDesc, string propName) where T : class
+        {
+            var ss = dbcontext.Set<T>().OrderByProperty(propName, isDesc).Skip(skip).Take(take);
+            return await ss.ToListAsync();
+        }
+
+        public int GetCount<T>() where T : class
+        {
+            return dbcontext.Set<T>().Count();
+        }
+
+        public int GetCount<T>(Expression<Func<T, bool>> predicate) where T : class
+        {
+            return dbcontext.Set<T>().Count(predicate);
+        }
     }
 }

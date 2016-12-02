@@ -23,10 +23,14 @@ namespace WebSinger.Controllers
             this.accordService = accordService;
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int page = 1)
         {
-            var singers = await singerService.GetAllAsync();
-            return View(singers);
+            var pageSize = 4;
+            var singers = await singerService.GetPartOrderBy(pageSize, (page - 1) * pageSize, true, "Views");
+            var count = singerService.GetCount();
+            var pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = count};
+            var ivm = new IndexViewModel { PageInfo = pageInfo, Singers = singers };
+            return View(ivm);
         }
 
         public async Task<ActionResult> SingerInfo(int id)
@@ -74,7 +78,7 @@ namespace WebSinger.Controllers
             return RedirectToAction("SingerInfo", new {id = song.SingerId});
         }
 
-        public async Task<ActionResult> AutocompleteSearch(string term)
+        public async Task<ActionResult> AutocompleteSearch()
         {
             var accords = await accordService.GetAllAsync();
             var accordNames = accords.Select(x => x.Name);

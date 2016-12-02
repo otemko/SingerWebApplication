@@ -18,15 +18,7 @@ namespace BLLSinger.Services
 
         public async Task<IEnumerable<Accord>> GetAccordsByAccordNames(string[] accordNames)
         {
-            var allAccords = new List<Accord>();
-
-            foreach (var accordName in accordNames)
-            {
-                var accords = await repository.Get<Accord>(a => a.Name == accordName);
-                allAccords.AddRange(accords);
-            }
-
-            return allAccords;
+            return await repository.Get<Accord>(a => accordNames.Contains(a.Name));
         }
     }
 }

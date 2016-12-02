@@ -3,7 +3,7 @@ namespace ORMSinger.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class _1 : DbMigration
+    public partial class _2 : DbMigration
     {
         public override void Up()
         {
@@ -42,6 +42,7 @@ namespace ORMSinger.Migrations
                         Biography = c.String(),
                         Views = c.Int(nullable: false),
                         Url = c.String(),
+                        CountSong = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             

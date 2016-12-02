@@ -1,28 +1,82 @@
-﻿@model IEnumerable<ModelSinger.Singer>
+﻿@using ModelSinger
+@using WebSinger.Helpers
+@model WebSinger.Models.IndexViewModel
 
 @{
     ViewBag.Title = "Home Page";
 }
 
+<script>
+    $(document).ready(function () {
+
+        $('#sortFieldName,#sortFieldCount,#sortFieldViews').click(function (e) {
+
+            var classUp = 'glyphicon glyphicon-chevron-up';
+            var classDown = 'glyphicon glyphicon-chevron-down';
+            var classSort = 'glyphicon glyphicon-sort';
+
+            var typeSort;
+
+            if ($(this).attr('class') === classDown || $(this).attr('class') === classUp) {
+                var classRes;
+                if ($(this).attr('class') === classDown) {
+                    classRes = classUp;
+                    typeSort = 'up';
+                }
+                if ($(this).attr('class') === classUp) {
+                    classRes = classDown;
+                    typeSort = 'down';
+                }
+                $(this).attr('class', classRes);
+            }
+
+            if ($(this).attr('class') === classSort) {
+
+                var findUpDown = $('.glyphicon.glyphicon-chevron-down,.glyphicon.glyphicon-chevron-up');
+                if (findUpDown.length !== 0) {
+                    $.each(findUpDown, function (index, res) {
+                        res.className = classSort;
+                    });
+                }
+                $(this).attr('class', classDown);
+                typeSort = 'down';
+            }
+            console.log(typeSort);
+            console.log($(this).attr('value'));
+        });
+    });
+</script>
+
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Count songs</th>
-            <th>Views</th>
+            <th>
+                Name
+                <span class="glyphicon glyphicon-sort" id="sortFieldName" value="Name"></span>
+            </th>
+            <th>
+                Count songs
+                <span class="glyphicon glyphicon-sort" id="sortFieldCount" value="CountSong"></span>
+            </th>
+            <th>
+                Views
+                <span class="glyphicon glyphicon-sort" id="sortFieldViews" value="Views"></span>
+            </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (ModelSinger.Singer singer in Model)
+        @foreach (ModelSinger.Singer singer in Model.Singers)
         {
             <tr>
                 <td>@Html.ActionLink(singer.Name, "SingerInfo", new { id = singer.Id })</td>
-                <td>@singer.Songs.Count</td>
+                <td>@singer.CountSong</td>
                 <td>@singer.Views</td>
             </tr>
         }
     </tbody>
 </table>
 <div>
-
+    <div class="btn-group">
+        @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { page = x }))
+    </div>
 </div>

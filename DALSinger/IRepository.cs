@@ -17,5 +17,8 @@ namespace DALSinger
         Task<IEnumerable<T>> GetAllAsync<T>() where T : class;
         Task<T> Get<T>(int id) where T : class;
         Task<IEnumerable<T>> Get<T>(Expression<Func<T, bool>> predicate) where T : class;
+        int GetCount<T>() where T : class;
+        int GetCount<T>(Expression<Func<T, bool>> predicate) where T : class;
+        Task<IEnumerable<T>> GetPartOrderBy<T>(int take, int skip, bool isDesc, string propName) where T : class;
     }
 }

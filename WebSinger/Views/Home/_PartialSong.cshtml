@@ -1,0 +1,47 @@
+﻿@model ModelSinger.Song
+
+<script>
+    $(document).ready(function () {
+
+        var url = window.location.href;
+        var index;
+        for (var i = 0; i < url.length; i++) {
+            if (url[i] === '/')
+                index = i;
+        }
+        var newUrl = url.slice(0, index);
+        
+        newUrl += "/" + @Html.Raw(Json.Encode(Model.Id));
+        window.history.pushState("", "", newUrl);
+    });
+</script>
+
+<h3>
+    @Model.Name
+    <i class="fa fa-pencil fa-fw" aria-hidden="true" onclick="location.href='@Url.Action("EditSong", new { id = Model.Id })'" style="cursor: pointer"></i>
+</h3>
+
+<hr>
+
+<div class="col-lg-8">
+<pre>
+    @Model.Text
+</pre>
+</div>
+
+<div class="col-lg-4">
+    @if (Model.Accords != null)
+    {
+        foreach (ModelSinger.Accord accord in Model.Accords)
+         {
+             if (accord.Image != null)
+             {
+                 <img src="data:image;base64,@System.Convert.ToBase64String(accord.Image)" alt="@accord.Name"/>
+             }
+             else
+             {
+                 <img alt="@accord.Name"/>
+             }
+         }
+    }
+</div>

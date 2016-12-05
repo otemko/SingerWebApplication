@@ -53,6 +53,10 @@
     <Compile Include="Migrations\201612020726328_2.Designer.cs">
       <DependentUpon>201612020726328_2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612051218596_4.cs" />
+    <Compile Include="Migrations\201612051218596_4.Designer.cs">
+      <DependentUpon>201612051218596_4.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingerDbContext.cs" />
@@ -72,6 +76,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201612020726328_2.resx">
       <DependentUpon>201612020726328_2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612051218596_4.resx">
+      <DependentUpon>201612051218596_4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -40,9 +40,10 @@ namespace WebSinger.Controllers
 
             var singer = await singerService.Get(id);
             var songs = await songService.GetBySingerIdPartOrderBy(id, pageSize, (page - 1)*pageSize, isDesc, name);
+            var songIds = songs.Select(s => s.Id);
             var countSong = songService.GetCountBySungerId(id);
             var pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = countSong };
-            var sivm = new SingerInfoViewModel() { PageInfo = pageInfo, IsDesc = isDesc, Singer = singer, Songs = songs, SortName = name};
+            var sivm = new SingerInfoViewModel() { PageInfo = pageInfo, IsDesc = isDesc, Singer = singer, Songs = songs, SortName = name, SongIds = songIds};
 
             return View(sivm);
         }
@@ -50,6 +51,7 @@ namespace WebSinger.Controllers
         public async Task<ActionResult> SongInfo(int id)
         {
             var song = await songService.Get(id);
+            TempData["CurrentId"] = id;
             return View(song);
         }
 
@@ -92,6 +94,38 @@ namespace WebSinger.Controllers
             var accordNames = accords.Select(x => x.Name);
 
             return Json(accordNames, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> GetNextOrPrevSong(int currentSingerId, string buttonType)
+        {
+            var songs = await songService.GetBySingerId(currentSingerId);
+            int index = 0;
+
+            var currentId = Convert.ToInt32(TempData["CurrentId"]); ;
+
+            for (int i = 0; i < songs.Count(); i++)
+            {
+                if (songs.ElementAt(i).Id == currentId)
+                {
+                    if (buttonType == "next")
+                    {
+                        index = i + 1;
+                        index = index >= songs.Count() ? 0 : index;
+                    }
+                    if (buttonType == "prev")
+                    {
+                        index = i - 1;
+                        index = index < 0 ? songs.Count() - 1  : index;
+                    }
+                    break;
+                }
+            }
+
+            var newSong = songs.ElementAt(index);
+            
+            TempData["CurrentId"] = newSong.Id;
+
+            return PartialView("_PartialSong", newSong);
         }
     }
 }

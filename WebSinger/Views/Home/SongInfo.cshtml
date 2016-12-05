@@ -1,32 +1,21 @@
 ﻿@model ModelSinger.Song
 
-@{
-    ViewBag.Title = Model.Name;
-}
-<h3>
-    @Model.Name
-    <i class="fa fa-pencil fa-fw" aria-hidden="true" onclick="location.href='@Url.Action("EditSong", new { id = Model.Id })'" style="cursor: pointer"></i>
-</h3>
-
-
-<hr>
-<div class="col-lg-8">
-<pre>
-    @Model.Text
-</pre>
-</div>
-
-<div class="col-lg-4">
-    @foreach (ModelSinger.Accord accord in Model.Accords)
-    {
-        if (accord.Image != null)
-        {
-            <img src="data:image;base64,@System.Convert.ToBase64String(accord.Image)" alt="@accord.Name" />
-        }
-        else
-        {
-            <img alt="@accord.Name" />
-        }
+<div class="row" id="res">
+    @{
+        Html.RenderPartial("_PartialSong", Model);
     }
 </div>
+
+@using (Ajax.BeginForm("GetNextOrPrevSong", "Home", new {currentSingerId = Model.SingerId }, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "res"}))
+{
+    <div class="row">
+        <div style="display: inline">
+            <input class="btn btn-default" type="submit" value="prev" id="btnPrev" name="buttonType" />
+        </div>
+        <div style='display: inline; float: right'>
+            <input class="btn btn-default" type="submit" value="next" id="btnNext" name="buttonType" />
+        </div>
+    </div>
+}
+
 

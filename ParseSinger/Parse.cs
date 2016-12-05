@@ -23,7 +23,7 @@ namespace ParseSinger
 
             var singers = new List<Singer>();
 
-            for (int i = 1; i < 2/*tableNodes.Length*/; i++)
+            for (int i = 1; i < 3/*tableNodes.Length*/; i++)
             {
                 var aNode = tableNodes[i].SelectSingleNode(".//td[@class='artist_name']//a");
 

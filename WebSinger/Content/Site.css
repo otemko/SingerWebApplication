@@ -26,3 +26,7 @@ textarea {
 .hrefwithoutblue {
     color: inherit;
 }
+
+.padding-top {
+    padding-top: 35px;
+}

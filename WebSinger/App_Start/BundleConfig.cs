@@ -23,6 +23,7 @@ namespace WebSinger
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js",
                       "~/Scripts/jquery-ui-1.12.1.min.js",
+                      "~/Scripts/jquery.unobtrusive-ajax.min.js",
                       "~/Scripts/typeahead.bundle.min.js",
                       "~/Scripts/bootstrap-tokenfield.js"));
 

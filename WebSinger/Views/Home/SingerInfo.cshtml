@@ -1,32 +1,50 @@
 ﻿@using WebSinger.Helpers
-@model ModelSinger.Singer
+@using ModelSinger
+@model WebSinger.Models.SingerInfoViewModel
+
 
 @{
-    ViewBag.Title = Model.Name;
+    ViewBag.Title = Model.Singer.Name;
 }
 
 <h3>
-    @Model.Name
+    @Model.Singer.Name
 </h3>
 <hr>
 <div>
-    @Html.AddText(Model.Biography)
+    @Html.AddText(Model.Singer.Biography)
 </div>
 
 <table class="table table-striped">
     <thead>
-        <tr>
-            <th>Name</th>
-            <th>Views</th>
-        </tr>
+    <tr>
+        <th>
+            Name
+            <a class="hrefwithoutblue" href="@Url.Action("SingerInfo", Html.ToRouteValueDictionary(Model.SortName, Model.IsDesc, "Name"))">
+                @Html.SortIdentifier(Model.SortName, "Name", Model.IsDesc)
+            </a>
+        </th>
+        <th>
+            Views
+            <a class="hrefwithoutblue" href="@Url.Action("SingerInfo", Html.ToRouteValueDictionary(Model.SortName, Model.IsDesc, "Views"))">
+                @Html.SortIdentifier(Model.SortName, "Views", Model.IsDesc)
+            </a>
+        </th>
+    </tr>
     </thead>
+
     <tbody>
-        @foreach (ModelSinger.Song song in Model.Songs)
-        {
-            <tr>
-                <td>@Html.ActionLink(song.Name, "SongInfo", new { id = song.Id })</td>
-                <td>@song.Views</td>
-            </tr>
-        }
+    @foreach (ModelSinger.Song song in Model.Songs)
+    {
+        <tr>
+            <td>@Html.ActionLink(song.Name, "SongInfo", new { id = song.Id })</td>
+            <td>@song.Views</td>
+        </tr>
+    }
     </tbody>
 </table>
+<div>
+    <div class="btn-group">
+        @Html.PageLinks(Model.PageInfo, x => Url.Action("SingerInfo", new { page = x, isDesc = Model.IsDesc, name = Model.SortName }))
+    </div>
+</div>

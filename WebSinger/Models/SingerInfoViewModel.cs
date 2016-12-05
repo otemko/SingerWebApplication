@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using ModelSinger;
 
 namespace WebSinger.Models
 {
-    public class IndexViewModel
+    public class SingerInfoViewModel
     {
-        public IEnumerable<Singer> Singers { get; set; }
+        public Singer Singer { get; set; }
+        public IEnumerable<Song> Songs { get; set; }
         public PageInfo PageInfo { get; set; }
         public bool IsDesc { get; set; }
         public string SortName { get; set; }

@@ -27,7 +27,7 @@ namespace WebSinger.Helpers
                 }
 
                 tag.AddCssClass("btn btn-default");
-                result.Append(tag.ToString());
+                result.Append(tag);
             }
             return MvcHtmlString.Create(result.ToString());
         }

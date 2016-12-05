@@ -23,20 +23,28 @@ namespace WebSinger.Controllers
             this.accordService = accordService;
         }
 
-        public async Task<ActionResult> Index(int page = 1)
+        public async Task<ActionResult> Index(int page = 1, bool isDesc = true, string name = "Name")
         {
-            var pageSize = 4;
-            var singers = await singerService.GetPartOrderBy(pageSize, (page - 1) * pageSize, true, "Views");
+            var pageSize = 2;
+            
+            var singers = await singerService.GetPartOrderBy(pageSize, (page - 1) * pageSize, isDesc, name);
             var count = singerService.GetCount();
             var pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = count};
-            var ivm = new IndexViewModel { PageInfo = pageInfo, Singers = singers };
+            var ivm = new IndexViewModel { PageInfo = pageInfo, Singers = singers, SortName = name, IsDesc = isDesc};
             return View(ivm);
         }
 
-        public async Task<ActionResult> SingerInfo(int id)
+        public async Task<ActionResult> SingerInfo(int id, int page = 1, bool isDesc = true, string name = "Name")
         {
+            var pageSize = 10;
+
             var singer = await singerService.Get(id);
-            return View(singer);
+            var songs = await songService.GetBySingerIdPartOrderBy(id, pageSize, (page - 1)*pageSize, isDesc, name);
+            var countSong = songService.GetCountBySungerId(id);
+            var pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = countSong };
+            var sivm = new SingerInfoViewModel() { PageInfo = pageInfo, IsDesc = isDesc, Singer = singer, Songs = songs, SortName = name};
+
+            return View(sivm);
         }
 
         public async Task<ActionResult> SongInfo(int id)

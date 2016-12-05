@@ -20,5 +20,6 @@ namespace DALSinger
         int GetCount<T>() where T : class;
         int GetCount<T>(Expression<Func<T, bool>> predicate) where T : class;
         Task<IEnumerable<T>> GetPartOrderBy<T>(int take, int skip, bool isDesc, string propName) where T : class;
+        Task<IEnumerable<T>> GetPartOrderByWhere<T>(int take, int skip, bool isDesc, string propName, Expression<Func<T, bool>> predicate) where T : class;
     }
 }

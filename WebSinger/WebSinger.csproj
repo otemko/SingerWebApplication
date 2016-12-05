@@ -188,9 +188,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\PaginationHelper.cs" />
+    <Compile Include="Helpers\SortHelper.cs" />
     <Compile Include="Helpers\TextHelper.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
     <Compile Include="Models\PageInfo.cs" />
+    <Compile Include="Models\SingerInfoViewModel.cs" />
     <Compile Include="Models\SongViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

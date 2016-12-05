@@ -1,6 +1,8 @@
 ﻿@using ModelSinger
 @using WebSinger.Helpers
+@using WebSinger.Helpers
 @model WebSinger.Models.IndexViewModel
+
 
 @{
     ViewBag.Title = "Home Page";
@@ -9,41 +11,42 @@
 <script>
     $(document).ready(function () {
 
-        $('#sortFieldName,#sortFieldCount,#sortFieldViews').click(function (e) {
+        //var classUp = 'glyphicon glyphicon-chevron-up';
+        //var classDown = 'glyphicon glyphicon-chevron-down';
+        //var classSort = 'glyphicon glyphicon-sort';
 
-            var classUp = 'glyphicon glyphicon-chevron-up';
-            var classDown = 'glyphicon glyphicon-chevron-down';
-            var classSort = 'glyphicon glyphicon-sort';
+        //$('#Name,#CountSong,#Views').click(function (e) {
 
-            var typeSort;
+        //    var typeSort = true;
 
-            if ($(this).attr('class') === classDown || $(this).attr('class') === classUp) {
-                var classRes;
-                if ($(this).attr('class') === classDown) {
-                    classRes = classUp;
-                    typeSort = 'up';
-                }
-                if ($(this).attr('class') === classUp) {
-                    classRes = classDown;
-                    typeSort = 'down';
-                }
-                $(this).attr('class', classRes);
-            }
+        //    if ($(this).attr('class') === classDown || $(this).attr('class') === classUp) {
+        //        var classRes;
+        //        if ($(this).attr('class') === classDown) {
+        //            classRes = classUp;
+        //            typeSort = false;
 
-            if ($(this).attr('class') === classSort) {
+        //        }
+        //        if ($(this).attr('class') === classUp) {
+        //            classRes = classDown;
+        //            typeSort = true;
+        //        }
+        //        $(this).attr('class', classRes);
+        //    }
 
-                var findUpDown = $('.glyphicon.glyphicon-chevron-down,.glyphicon.glyphicon-chevron-up');
-                if (findUpDown.length !== 0) {
-                    $.each(findUpDown, function (index, res) {
-                        res.className = classSort;
-                    });
-                }
-                $(this).attr('class', classDown);
-                typeSort = 'down';
-            }
-            console.log(typeSort);
-            console.log($(this).attr('value'));
-        });
+        //    if ($(this).attr('class') === classSort) {
+
+        //        var findUpDown = $('.glyphicon.glyphicon-chevron-down,.glyphicon.glyphicon-chevron-up');
+        //        if (findUpDown.length !== 0) {
+        //            $.each(findUpDown, function (index, res) {
+        //                res.className = classSort;
+        //            });
+        //        }
+        //        $(this).attr('class', classDown);
+        //    }
+        //    var url = "?page=1&isDesc=" + typeSort + "&name=" + $(this).attr('value');
+        //    console.log(url);
+        //    $.get(url);
+        //});
     });
 </script>
 
@@ -52,15 +55,22 @@
         <tr>
             <th>
                 Name
-                <span class="glyphicon glyphicon-sort" id="sortFieldName" value="Name"></span>
+                <a class="hrefwithoutblue" href="@Url.Action("Index", Html.ToRouteValueDictionary(Model.SortName, Model.IsDesc, "Name"))">
+                    @Html.SortIdentifier(Model.SortName, "Name", Model.IsDesc)
+                </a>
             </th>
             <th>
                 Count songs
-                <span class="glyphicon glyphicon-sort" id="sortFieldCount" value="CountSong"></span>
+                <a class="hrefwithoutblue" href="@Url.Action("Index", Html.ToRouteValueDictionary(Model.SortName, Model.IsDesc, "CountSong")) ">
+                @Html.SortIdentifier(Model.SortName, "CountSong", Model.IsDesc)
+                </a>
+                
             </th>
             <th>
                 Views
-                <span class="glyphicon glyphicon-sort" id="sortFieldViews" value="Views"></span>
+                <a class="hrefwithoutblue" href="@Url.Action("Index", Html.ToRouteValueDictionary(Model.SortName, Model.IsDesc, "Views"))">
+                    @Html.SortIdentifier(Model.SortName, "Views", Model.IsDesc)
+                </a>
             </th>
         </tr>
     </thead>
@@ -77,6 +87,6 @@
 </table>
 <div>
     <div class="btn-group">
-        @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { page = x }))
+        @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { page = x, isDesc = Model.IsDesc, name = Model.SortName }))
     </div>
 </div>

@@ -1,20 +1,19 @@
 ﻿@model ModelSinger.Song
 
-<div class="row" id="res">
-    @{
-        Html.RenderPartial("_PartialSong", Model);
-    }
-</div>
-
 @using (Ajax.BeginForm("GetNextOrPrevSong", "Home", new {currentSingerId = Model.SingerId }, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "res"}))
 {
-    <div class="row">
-        <div style="display: inline">
+    <div class="row" style="padding-top: 10px;">
+        <div style="display: inline;">
             <input class="btn btn-default" type="submit" value="prev" id="btnPrev" name="buttonType" />
         </div>
-        <div style='display: inline; float: right'>
+        <div style="display: inline; float: right;">
             <input class="btn btn-default" type="submit" value="next" id="btnNext" name="buttonType" />
         </div>
+    </div>
+    <div class="row" id="res">
+        @{
+            Html.RenderPartial("_PartialSong", Model);
+        }
     </div>
 }
 

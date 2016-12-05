@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using BLLSinger.Interfaces;
 using ModelSinger;
+using WebSinger.Helpers;
 using WebSinger.Models;
 
 namespace WebSinger.Controllers
@@ -27,10 +29,27 @@ namespace WebSinger.Controllers
         {
             var pageSize = 2;
             
-            var singers = await singerService.GetPartOrderBy(pageSize, (page - 1) * pageSize, isDesc, name);
-            var count = singerService.GetCount();
+            var skip = (page - 1)*pageSize;
+
+            var singers = (IEnumerable<Singer>)CacheHelper.Get("singers" + page + pageSize + skip + isDesc + name);
+            if (singers == null)
+            {
+                singers = await singerService.GetPartOrderBy(pageSize, skip, isDesc, name);
+                CacheHelper.Set("singers" + page + pageSize + skip + isDesc + name, singers);
+            }
+
+            int count;
+            if (CacheHelper.Get("singerCount") != null)
+                count = (int)CacheHelper.Get("singerCount");
+            else
+            {
+                count = singerService.GetCount(); 
+                CacheHelper.Set("singerCount", count);
+            }
+            
             var pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = count};
             var ivm = new IndexViewModel { PageInfo = pageInfo, Singers = singers, SortName = name, IsDesc = isDesc};
+
             return View(ivm);
         }
 
@@ -38,19 +57,45 @@ namespace WebSinger.Controllers
         {
             var pageSize = 10;
 
-            var singer = await singerService.Get(id);
-            var songs = await songService.GetBySingerIdPartOrderBy(id, pageSize, (page - 1)*pageSize, isDesc, name);
-            var songIds = songs.Select(s => s.Id);
-            var countSong = songService.GetCountBySungerId(id);
+            var singer = (Singer)CacheHelper.Get("singer" + id);
+            if (singer == null)
+            {
+                singer = await singerService.Get(id);
+                CacheHelper.Set("singer" + id, singer);
+            }
+
+            int skip = (page - 1)*pageSize;
+            var songs = (IEnumerable<Song>)CacheHelper.Get("songs" + id + pageSize + skip + isDesc + name);
+            if (songs == null)
+            { 
+                songs = await songService.GetBySingerIdPartOrderBy(id, pageSize, skip, isDesc, name);
+                CacheHelper.Set("songs" + id + pageSize + skip + isDesc + name, songs);
+            }
+            
+            int countSong;
+            if (CacheHelper.Get("songsCount" + id) != null)
+                countSong = (int)CacheHelper.Get("songsCount" + id);
+            else
+            {
+                countSong = songService.GetCountBySingerId(id);
+                CacheHelper.Set("songsCount" + id, countSong);
+            }
+            
             var pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = countSong };
-            var sivm = new SingerInfoViewModel() { PageInfo = pageInfo, IsDesc = isDesc, Singer = singer, Songs = songs, SortName = name, SongIds = songIds};
+            var sivm = new SingerInfoViewModel() { PageInfo = pageInfo, IsDesc = isDesc, Singer = singer, Songs = songs, SortName = name};
 
             return View(sivm);
         }
 
         public async Task<ActionResult> SongInfo(int id)
         {
-            var song = await songService.Get(id);
+            var song = (Song)CacheHelper.Get("song" + id);
+            if (song == null)
+            {
+                song = await songService.Get(id);
+                CacheHelper.Set("song" + id, song);
+            }
+
             TempData["CurrentId"] = id;
             return View(song);
         }
@@ -58,8 +103,15 @@ namespace WebSinger.Controllers
         [HttpGet]
         public async Task<ActionResult> EditSong(int id)
         {
-            var song = await songService.Get(id);
+            var song = (Song)CacheHelper.Get("song" + id);
+            if (song == null)
+            {
+                song = await songService.Get(id);
+                CacheHelper.Set("song" + id, song);
+            }
+
             var accordNames = song.Accords.Select(a => a.Name).ToArray();
+
             return View(new SongViewModel
             {
                 Id = song.Id,
@@ -79,18 +131,31 @@ namespace WebSinger.Controllers
 
             accords = accordsName != null ? (await accordService.GetAccordsByAccordNames(accordsName)).ToList() : null;
 
-            var song = await songService.Get(songView.Id);
+            var song = (Song)CacheHelper.Get("song" + songView.Id);
+            if (song == null)
+            {
+                song = await songService.Get(songView.Id);
+                CacheHelper.Set("song" + songView.Id, song);
+            }
+
             song.Accords = accords;
             song.Text = songView.Text;
 
             songService.Update(song);
+            CacheHelper.Change("song" + songView.Id, song);
 
             return RedirectToAction("SingerInfo", new {id = song.SingerId});
         }
 
         public async Task<ActionResult> AutocompleteSearch()
         {
-            var accords = await accordService.GetAllAsync();
+            var accords = (IEnumerable<Accord>) CacheHelper.Get("allAccords");
+            if (accords == null)
+            {
+                accords = await accordService.GetAllAsync(); ;
+                CacheHelper.Set("allAccords", accords);
+            }
+            
             var accordNames = accords.Select(x => x.Name);
 
             return Json(accordNames, JsonRequestBehavior.AllowGet);
@@ -98,7 +163,13 @@ namespace WebSinger.Controllers
 
         public async Task<ActionResult> GetNextOrPrevSong(int currentSingerId, string buttonType)
         {
-            var songs = await songService.GetBySingerId(currentSingerId);
+            var songs = (IEnumerable<Song>)CacheHelper.Get("songsByUserId" + currentSingerId);
+            if (songs == null)
+            {
+                songs = await songService.GetBySingerId(currentSingerId);
+                CacheHelper.Set("songsByUserId" + currentSingerId, songs);
+            }
+
             int index = 0;
 
             var currentId = Convert.ToInt32(TempData["CurrentId"]); ;

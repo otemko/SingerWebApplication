@@ -15,7 +15,7 @@ namespace BLLSinger.Services
             this.repository = repository;
         }
 
-        public int GetCountBySungerId(int id)
+        public int GetCountBySingerId(int id)
         {
             return repository.GetCount<Song>(s => s.SingerId == id);
         }

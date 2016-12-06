@@ -326,6 +326,10 @@
       <Project>{b03e1e32-5b35-43df-8505-7a4c06edf5cf}</Project>
       <Name>ModelSinger</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MvcBreadCrumbs\MvcBreadCrumbs.csproj">
+      <Project>{256e0841-11c1-402b-99d9-defb451365bf}</Project>
+      <Name>MvcBreadCrumbs</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

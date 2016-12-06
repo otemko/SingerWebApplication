@@ -9,6 +9,6 @@ namespace WebSinger.Models
     public class SongInfoViewModel
     {
         public Song CurrentSong { get; set; }
-        public IEnumerable<int> SongIds { get; set; }
+        public int CurrentId { get; set; }
     }
 }

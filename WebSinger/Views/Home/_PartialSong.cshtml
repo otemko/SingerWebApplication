@@ -1,4 +1,5 @@
-﻿@model ModelSinger.Song
+﻿@using MvcBreadCrumbs
+@model ModelSinger.Song
 
 <script>
     $(document).ready(function () {
@@ -10,15 +11,20 @@
                 index = i;
         }
         var newUrl = url.slice(0, index);
-        
+
         newUrl += "/" + @Html.Raw(Json.Encode(Model.Id));
         window.history.pushState("", "", newUrl);
+
     });
 </script>
 
+<div class="container body-content mybreadcrumb">
+    @Html.Raw(BreadCrumb.Display())
+</div>
+
 <h3>
     @Model.Name
-    <i class="fa fa-pencil fa-fw" aria-hidden="true" onclick="location.href='@Url.Action("EditSong", new { id = Model.Id })'" style="cursor: pointer"></i>
+    <i class="fa fa-pencil fa-fw" aria-hidden="true" onclick="location.href = '@Url.Action("EditSong", new {id = Model.Id})'" style="cursor: pointer"></i>
 </h3>
 
 <hr>

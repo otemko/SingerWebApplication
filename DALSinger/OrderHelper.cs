@@ -30,8 +30,12 @@ namespace DALSinger
 
             string typeSort = isDesc ? "OrderByDescending" : "OrderBy";
 
-            var OrderByMethod = typeof(Queryable).GetMethods().Single(method => method.Name == typeSort && method.GetParameters().Length == 2);
+            //ParameterExpression param = Expression.Parameter(typeof(T), "x"); // x
+            //Expression property = Expression.Property(param, propertyName);     // x.ColumnName
+            //Func<T, object> func = Expression.Lambda<Func<T, object>>(Expression.Convert(Expression.Property(param, propertyName), typeof(object)), param).Compile();
 
+            var OrderByMethod = typeof(Queryable).GetMethods().Single(method => method.Name == typeSort && method.GetParameters().Length == 2);
+            
             MethodInfo genericMethod = OrderByMethod.MakeGenericMethod(typeof(T), orderByProperty.Type);
             object ret = genericMethod.Invoke(null, new object[] { source, lambda });
             return (IQueryable<T>)ret;

@@ -1,7 +1,12 @@
 ﻿@using ModelSinger
+@using MvcBreadCrumbs
 @using WebSinger.Helpers
 @using WebSinger.Helpers
 @model WebSinger.Models.IndexViewModel
+
+<div class="container body-content mybreadcrumb">
+    @Html.Raw(BreadCrumb.Display())
+</div>
 
 <table class="table table-striped">
     <thead>

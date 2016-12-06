@@ -1,6 +1,11 @@
 ﻿@using WebSinger.Helpers
 @using ModelSinger
+@using MvcBreadCrumbs
 @model WebSinger.Models.SingerInfoViewModel
+
+<div class="container body-content mybreadcrumb">
+    @Html.Raw(BreadCrumb.Display())
+</div>
 
 <h3>
     @Model.Singer.Name

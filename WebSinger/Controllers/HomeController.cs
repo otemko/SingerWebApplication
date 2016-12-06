@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using BLLSinger.Interfaces;
 using ModelSinger;
+using MvcBreadCrumbs;
 using WebSinger.Helpers;
 using WebSinger.Models;
 
@@ -25,9 +24,10 @@ namespace WebSinger.Controllers
             this.accordService = accordService;
         }
 
+        [BreadCrumb(Clear = true, Label = "Singers")]
         public async Task<ActionResult> Index(int page = 1, bool isDesc = true, string name = "Name")
         {
-            var pageSize = 2;
+            var pageSize = 5;
             
             var skip = (page - 1)*pageSize;
 
@@ -52,9 +52,10 @@ namespace WebSinger.Controllers
 
             return View(ivm);
         }
-
+        [BreadCrumb]
         public async Task<ActionResult> SingerInfo(int id, int page = 1, bool isDesc = true, string name = "Name")
         {
+           
             var pageSize = 10;
 
             var singer = (Singer)CacheHelper.Get("singer" + id);
@@ -63,6 +64,9 @@ namespace WebSinger.Controllers
                 singer = await singerService.Get(id);
                 CacheHelper.Set("singer" + id, singer);
             }
+
+            //readCrumb.Add(Url.Action("SongInfo", "Home", new { id, page, isDesc, name }), singer.Name);
+            BreadCrumb.SetLabel(singer.Name);
 
             int skip = (page - 1)*pageSize;
             var songs = (IEnumerable<Song>)CacheHelper.Get("songs" + id + pageSize + skip + isDesc + name);
@@ -87,14 +91,18 @@ namespace WebSinger.Controllers
             return View(sivm);
         }
 
+        [BreadCrumb]
         public async Task<ActionResult> SongInfo(int id)
         {
             var song = (Song)CacheHelper.Get("song" + id);
+            
             if (song == null)
             {
                 song = await songService.Get(id);
                 CacheHelper.Set("song" + id, song);
             }
+           
+            BreadCrumb.SetLabel(song.Name);
 
             TempData["CurrentId"] = id;
             return View(song);
@@ -161,6 +169,7 @@ namespace WebSinger.Controllers
             return Json(accordNames, JsonRequestBehavior.AllowGet);
         }
 
+        
         public async Task<ActionResult> GetNextOrPrevSong(int currentSingerId, string buttonType)
         {
             var songs = (IEnumerable<Song>)CacheHelper.Get("songsByUserId" + currentSingerId);
@@ -193,7 +202,10 @@ namespace WebSinger.Controllers
             }
 
             var newSong = songs.ElementAt(index);
-            
+
+            BreadCrumb.DeleteLast();
+            BreadCrumb.Add(Url.Action("SongInfo", "Home", new { id = newSong.Id }), newSong.Name);
+
             TempData["CurrentId"] = newSong.Id;
 
             return PartialView("_PartialSong", newSong);

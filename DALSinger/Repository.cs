@@ -90,7 +90,9 @@ namespace DALSinger
 
         public async Task<IEnumerable<T>> GetPartOrderBy<T>(int take, int skip, bool isDesc, string propName) where T : class
         {
-            return await dbcontext.Set<T>().OrderByProperty(propName, isDesc).Skip(skip).Take(take).ToListAsync();
+            var ss = dbcontext.Set<T>().OrderByProperty(propName, isDesc);
+            var xx = ss.ToList();
+            return await ss.Skip(skip).Take(take).ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetPartOrderByWhere<T>(int take, int skip, bool isDesc, string propName, Expression<Func<T, bool>> predicate) where T : class
